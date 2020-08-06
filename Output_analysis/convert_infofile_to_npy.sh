@@ -17,8 +17,8 @@ module load mpi4py
 export MV2_ENABLE_AFFINITY=0
 ibrun python3 convert_infofile_to_npy.py LHsamples_original_1000_AnnQonly 1000
 ibrun python3 convert_infofile_to_npy.py LHsamples_wider_1000_AnnQonly 1000
-ibrun python3 convert_infofile_to_npy.py LHsamples_original_100_AnnQonly 1000
-ibrun python3 convert_infofile_to_npy.py LHsamples_wider_100_AnnQonly 1000
+ibrun python3 convert_infofile_to_npy.py LHsamples_original_100_AnnQonly 100
+ibrun python3 convert_infofile_to_npy.py LHsamples_wider_100_AnnQonly 100
 ibrun python3 convert_infofile_to_npy.py Paleo_SOWs 366
 # ibrun python3 convert_infofile_to_npy.py CMIP_SOWs 209
 ibrun python3 convert_infofile_to_npy.py CMIPunscaled_SOWs 97

@@ -34,7 +34,7 @@ def makeFigure6_ShortageDistns():
             
             # load shortage data for this experimental design
             SYN = np.load('../Simulation_outputs/' + design + '/' + structure + '_info.npy')
-            # extract columns for year shortage and demand and convert acre-ft to ^3
+            # extract columns for year shortage and demand and convert acre-ft to m^3
             SYN_short = SYN[:,short_idx,:]*1233.48/1E6
             SYN_demand = SYN[:,demand_idx,:]*1233.48/1E6
             # use just the samples within the experimental design
