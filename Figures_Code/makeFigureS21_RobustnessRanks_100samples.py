@@ -4,7 +4,7 @@ import seaborn as sns
 from scipy import stats as ss
 from makeFigure9_FactorMaps import plotFailureHeatmap, highlight_cell
 
-def makeFigureS20_RobustnessRanks_100samples():
+def makeFigureS21_RobustnessRanks_100samples():
 
     allRobustness = np.load('../Output_analysis/RobustnessRanks_no15mi_100samples.npy')
     nstructures = np.shape(allRobustness)[2]
@@ -71,7 +71,7 @@ def makeFigureS20_RobustnessRanks_100samples():
     fig.set_size_inches([19.2,9.6])
     fig.subplots_adjust(bottom=0.2,wspace=0.25,hspace=0.35)
     fig.legend(handles, labels, loc='lower center', ncol=2, frameon=True, fontsize=16)
-    fig.savefig('FigureS20_RobustnessRanks_100samples.pdf')
+    fig.savefig('FigureS21_RobustnessRanks_100samples.pdf')
     fig.clf()
     
     return None

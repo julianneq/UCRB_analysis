@@ -5,11 +5,11 @@ import seaborn as sns
 from utils import Sobol_per_structure
 from makeFigure7_VarianceDecomposition import plotSums
 
-def makeFigureS11_CMIPcomparison():
+def makeFigureS14_VarianceDecomposition_wider_100():
 
     sns.set_style("white")
     
-    designs = ['CMIPunscaled_SOWs','CMIP_SOWs']
+    designs = ['LHsamples_wider_1000_AnnQonly','LHsamples_wider_100_AnnQonly']
     structures = ['53_ADC022','7200645','3704614']
     
     colors = ["#de2d26", "#fb6a4a", "#3182bd", "#6baed6", "#a50f15", "#08519c", "#9e9ac8"]
@@ -23,7 +23,7 @@ def makeFigureS11_CMIPcomparison():
     
     # perform variance decomposition
     #for structure in structures:
-    #    Sobol_per_structure('CMIP_SOWs', structure)
+    #    Sobol_per_structure('LHsamples_wider_100_AnnQonly', structure)
     
     # plot variance decomposition
     fig = plt.figure()
@@ -55,7 +55,7 @@ def makeFigureS11_CMIPcomparison():
                       [r'$\mu_d$',r'$\sigma_d$',r'$\mu_w$',r'$\sigma_w$',r'$p_{d,d}$',r'$p_{w,w}$','Interactions'],\
                       loc='lower center', ncol=4, fontsize=16, frameon=True)
     plt.setp(legend.get_title(),fontsize=16)
-    fig.savefig('FigureS11_CMIPcomparison.pdf')
+    fig.savefig('FigureS14_VarianceDecomposition_wider_100.pdf')
     fig.clf()
 
     return None

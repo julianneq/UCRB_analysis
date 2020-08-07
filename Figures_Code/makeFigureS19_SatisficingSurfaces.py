@@ -2,9 +2,9 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 from makeFigure9_FactorMaps import plotFailureHeatmap, highlight_cell
 
-def makeFigureS19_SatisficingSurfaces_100samples():
+def makeFigureS19_SatisficingSurfaces():
     
-    designs = ['LHsamples_original_100_AnnQonly','CMIPunscaled_SOWs','Paleo_SOWs','LHsamples_wider_100_AnnQonly']
+    designs = ['LHsamples_original_1000_AnnQonly','CMIPunscaled_SOWs','Paleo_SOWs','LHsamples_wider_1000_AnnQonly']
     titles = ['Box Around Historical','CMIP','Paleo','All-Encompassing']
     structures = ['53_ADC022','7200645','3704614']
     
@@ -28,7 +28,7 @@ def makeFigureS19_SatisficingSurfaces_100samples():
     cbar.ax.set_ylabel("Percent of realizations\nin which criterion is met", rotation=-90, va="bottom",fontsize=16)
     fig.subplots_adjust(right=0.8,wspace=0.5,hspace=0.5)
     fig.set_size_inches([19.2,9.6])
-    fig.savefig("FigureS19_SatisficingSurfaces_100samples.pdf")
+    fig.savefig("FigureS19_SatisficingSurfaces.pdf")
     fig.clf()
     
     return None

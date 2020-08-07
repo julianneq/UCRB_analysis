@@ -6,7 +6,7 @@ from utils import Sobol_per_structure, setupProblem, getSamples
 from makeFigure6_ShortageDistns import plotSDC
 from makeFigure7_VarianceDecomposition import plotSums
 
-def makeFigureS10_VarianceDecomposition_User3():
+def makeFigureS11_VarianceDecomposition_User3():
 
     sns.set_style("white")
     
@@ -100,7 +100,7 @@ def makeFigureS10_VarianceDecomposition_User3():
     fig.set_size_inches([16,8])
     fig.subplots_adjust(bottom=0.22)
     fig.text(0.5, 0.15, 'Percentile of Shortage', ha='center', fontsize=16)
-    fig.savefig('FigureS10_VarianceDecomposition_User3.pdf')
+    fig.savefig('FigureS11_VarianceDecomposition_User3.pdf')
     fig.clf()
 
     return None

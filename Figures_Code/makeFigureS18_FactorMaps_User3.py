@@ -5,21 +5,19 @@ import pandas as pd
 import seaborn as sns
 from utils import calcFailureHeatmap, setupProblem, getSamples, fitLogit, fitLogit_interact, roundup, calcPseudoR2
 from makeFigure6_ShortageDistns import plotSDC
-from makeFigure9_FactorMaps import plotFailureHeatmap, highlight_cell, plotFactorMap
+from makeFigure9_FactorMaps import plotFailureHeatmap, highlight_cell, plotFactorMap, addPercentileBlocks
 
-def makeFigureS15_FactorMaps_User2():
+def makeFigureS18_FactorMaps_User3():
 
     sns.set_style("white")
     
     # constants, vectors
     design = 'LHsamples_wider_1000_AnnQonly'
-    structure = '7200645'
+    structure = '3704614'
     short_idx = np.arange(2,22,2)
     demand_idx = np.arange(1,21,2)
-    percentiles = [50, 70, 90, 90]
-    short_magnitudes = [10, 10, 10, 30]
+    percentiles = [40, 90]
     nrealizations = 10
-    axes_indices = [(0,1),(0,2),(1,1),(1,2)]
     
     # plotting characteristics
     probability_cmap = mpl.cm.get_cmap('RdBu')
@@ -55,8 +53,8 @@ def makeFigureS15_FactorMaps_User2():
     dta = pd.DataFrame(data = np.repeat(samples, nrealizations, axis = 0), columns=param_names)
     
     
-    fig, axes = plt.subplots(2,3,figsize=(18.2,9.1))
-    fig.subplots_adjust(hspace=0.5,right=0.8,wspace=0.5)  
+    fig, axes = plt.subplots(2,4,figsize=(24.3,9.1))
+    fig.subplots_adjust(hspace=0.5,right=0.8,wspace=0.5)        
     # plot shortage distribution for this structure under all-encompassing experiment
     ax1 = axes[0,0]
     handles, labels = plotSDC(ax1, SYN_short, SYN_demand, hist_short, hist_demand, nsamples, nrealizations, True)
@@ -71,58 +69,53 @@ def makeFigureS15_FactorMaps_User2():
     # plotfailure heatmap for this structure under all-encompassing experiment
     ax2 = axes[1,0]
     allSOWs, historic_percents, frequencies, magnitudes, gridcells, im = plotFailureHeatmap(ax2, design, structure)
-    addPercentileBlocks(historic_percents, gridcells, percentiles, short_magnitudes, ax2)
+    addPercentileBlocks(historic_percents, gridcells, percentiles, ax2)
     allSOWsperformance = allSOWs/100
     historic_percents = [roundup(x) for x in historic_percents]
     #all_pseudo_r_scores = calcPseudoR2(frequencies, magnitudes, params_no, allSOWsperformance, dta, structure, design)
     all_pseudo_r_scores = pd.read_csv("../Simulation_outputs/" + design + "/" + structure + "_pseudo_r_scores.csv")
     
     for i in range(len(percentiles)):
-        dta['Success'] = allSOWsperformance[list(frequencies).index(100-percentiles[i]),int(short_magnitudes[i]/10)-1,:]
-        # consider each SOW a success if 50% or more realizations were a success
-        avg_dta = dta.groupby(['mu0','mu1','sigma0','sigma1','p00','p11'],as_index=False)[['Success']].mean()
-        avg_dta.loc[np.where(avg_dta['Success']>=0.5)[0],'Success'] = 1
-        avg_dta.loc[np.where(avg_dta['Success']<0.5)[0],'Success'] = 0
-        # load pseudo R2 of predictors for this magnitude/frequency combination
-        pseudo_r_scores = all_pseudo_r_scores[str((100-percentiles[i]))+'yrs_'+str(short_magnitudes[i])+'prc'].values
-        if pseudo_r_scores.any():
-            top_predictors = np.argsort(pseudo_r_scores)[::-1][:2]
-            ranges = param_bounds[top_predictors]
-            # define grid of x (1st predictor), and y (2nd predictor) dimensions
-            # to plot contour map over
-            xgrid = np.arange(param_bounds[top_predictors[0]][0], 
-                              param_bounds[top_predictors[0]][1], np.around((ranges[0][1]-ranges[0][0])/100,decimals=4))
-            ygrid = np.arange(param_bounds[top_predictors[1]][0], 
-                              param_bounds[top_predictors[1]][1], np.around((ranges[1][1]-ranges[1][0])/100,decimals=4))
-            all_predictors = [ avg_dta.columns.tolist()[k] for k in top_predictors]
-            avg_dta['Interaction'] = avg_dta[all_predictors[0]]*avg_dta[all_predictors[1]]
-            # fit logistic regression model with top two predictors of success and their interaction
-            # unless the matrix is non-singular; then drop the interaction
-            try:
+        for j in range(3):
+            # magnitude of shortage at this percentile to plot
+            h = np.where(np.array(historic_percents) == 100 - percentiles[i])[0][0]
+            if j == 0:
+                h -= 2
+            elif j == 2:
+                h += 2
+            # find out if each realization was a success or failure at this magnitude/frequency combination
+            dta['Success'] = allSOWsperformance[list(frequencies).index(100-percentiles[i]),h,:]
+            # consider each SOW a success if 50% or more realizations were a success
+            avg_dta = dta.groupby(['mu0','mu1','sigma0','sigma1','p00','p11'],as_index=False)[['Success']].mean()
+            avg_dta.loc[np.where(avg_dta['Success']>=0.5)[0],'Success'] = 1
+            avg_dta.loc[np.where(avg_dta['Success']<0.5)[0],'Success'] = 0
+            # load pseudo R2 of predictors for this magnitude/frequency combination
+            pseudo_r_scores = all_pseudo_r_scores[str((100-percentiles[i]))+'yrs_'+str(magnitudes[h])+'prc'].values
+            if pseudo_r_scores.any():
+                top_predictors = np.argsort(pseudo_r_scores)[::-1][:2]
+                ranges = param_bounds[top_predictors]
+                # define grid of x (1st predictor), and y (2nd predictor) dimensions
+                # to plot contour map over
+                xgrid = np.arange(param_bounds[top_predictors[0]][0], 
+                                  param_bounds[top_predictors[0]][1], np.around((ranges[0][1]-ranges[0][0])/100,decimals=4))
+                ygrid = np.arange(param_bounds[top_predictors[1]][0], 
+                                  param_bounds[top_predictors[1]][1], np.around((ranges[1][1]-ranges[1][0])/100,decimals=4))
+                all_predictors = [ dta.columns.tolist()[k] for k in top_predictors]
+                # fit logistic regression model with top two predictors of success and their interaction
+                avg_dta['Interaction'] = avg_dta[all_predictors[0]]*dta[all_predictors[1]]
                 result = fitLogit_interact(avg_dta, [all_predictors[k] for k in [0,1]])
-            except:
-                result = fitLogit(avg_dta, [all_predictors[k] for k in [0,1]])
-            
-            # plot success/failure for each SOW on top of logistic regression estimate of probability of success
-            contourset = plotFactorMap(axes[axes_indices[i]], result, avg_dta, probability_cmap, success_cmap, contour_levels, xgrid, ygrid, \
-                          all_predictors[0], all_predictors[1])
-            axes[axes_indices[i]].set_title("Success if " + str(short_magnitudes[i]) + "% shortage\n<" + str((100-percentiles[i])) + "% of the time", fontsize=16)
-
+                
+                # plot success/failure for each SOW on top of logistic regression estimate of probability of success
+                contourset = plotFactorMap(axes[i,j+1], result, avg_dta, probability_cmap, success_cmap, contour_levels, xgrid, ygrid, \
+                              all_predictors[0], all_predictors[1])
+                axes[i,j+1].set_title("Success if " + str(magnitudes[h]) + "% shortage\n<" + str((100-percentiles[i])) + "% of the time", fontsize=16)
+                fig.savefig('FigureS18_FactorMaps_User3.pdf')
+                
     cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
     cbar = fig.colorbar(contourset, cax=cbar_ax)
     cbar.ax.set_ylabel("Predicted Probability of Success", rotation=-90, va="bottom",fontsize=16)
     cbar.ax.tick_params(labelsize=16)
-    fig.savefig("FigureS15_FactorMaps_User2.pdf")
+    fig.savefig("FigureS18_FactorMaps_User3.pdf")
     fig.clf()
     
-    return None
-
-def addPercentileBlocks(historic_percents, gridcells, percentiles, short_magnitudes, ax):   
-    for i in range(len(percentiles)):
-        highlight_cell(int(short_magnitudes[i]/10)-1, int((100-percentiles[i])/10)-1, ax, color="black", linewidth=2)
-            
-    for i in range(len(historic_percents)):
-        if historic_percents[i] != 0:
-            highlight_cell(i, gridcells[i], ax, color="orange", linewidth=2)
-                
     return None

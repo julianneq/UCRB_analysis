@@ -8,7 +8,7 @@ from makeFigure6_ShortageDistns import plotSDC
 from makeFigure7_VarianceDecomposition import plotSums
 from makeFigure8_ResponseSurfaces import plotResponseSurface
 
-def makeFigureS16_ResponseSurfaces_User3():
+def makeFigureS17_ResponseSurfaces_User3():
 
     sns.set_style("white")
     
@@ -106,14 +106,14 @@ def makeFigureS16_ResponseSurfaces_User3():
             plotResponseSurface(axes[0,i+1], result, avg_dta, CMIP, Paleo, shortage_cmap, shortage_cmap, \
             	xgrid, ygrid, predictors[0], predictors[1], otherSOWs = False)
             axes[0,i+1].set_title(str(percentiles[i]) + 'th Percentile',fontsize=16)
-            fig.savefig('FigureS16_ResponseSurfaces_User3.pdf')
+            fig.savefig('FigureS17_ResponseSurfaces_User3.pdf')
             
             # plot prediction from regression with CMIP and Paleo samples on top
             plotResponseSurface(axes[1,i+1], result, avg_dta, CMIP, Paleo, shortage_cmap, shortage_cmap, \
             	xgrid, ygrid, predictors[0], predictors[1], otherSOWs = True)
-            fig.savefig('FigureS16_ResponseSurfaces_User3.pdf')
+            fig.savefig('FigureS17_ResponseSurfaces_User3.pdf')
 
-    fig.savefig('FigureS16_ResponseSurfaces_User3.pdf')
+    fig.savefig('FigureS17_ResponseSurfaces_User3.pdf')
     fig.clf()
     
     return None
