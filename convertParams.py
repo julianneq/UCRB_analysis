@@ -80,6 +80,8 @@ def setupProblem(design):
         param_bounds = np.loadtxt('Qgen/uncertain_params_original.txt', usecols=(1,2))[7:13,:]
     elif design == 'LHsamples_wider_1000_AnnQonly' or design == 'LHsamples_wider_1000_AnnQonly':
         param_bounds = np.loadtxt('Qgen/uncertain_params_wider.txt', usecols=(1,2))[7:13,:]
+    elif design == 'CMIP_SOWs':
+        param_bounds = np.loadtxt('Qgen/uncertain_params_CMIP.txt', usecols=(1,2))[7:13,:]
     elif design == 'CMIPunscaled_SOWs':
         param_bounds = np.loadtxt('Qgen/uncertain_params_CMIPunscaled.txt', usecols=(1,2))[7:13,:]
     elif design == 'Paleo_SOWs':
@@ -95,7 +97,7 @@ def setupProblem(design):
     
     return param_bounds, param_names, params_no, problem
 
-designs = ['LHsamples_original_1000_AnnQonly','LHsamples_wider_1000_AnnQonly','CMIPunscaled_SOWs','Paleo_SOWs']
+designs = ['LHsamples_original_1000_AnnQonly','LHsamples_wider_1000_AnnQonly','CMIP_SOWs','CMIPunscaled_SOWs','Paleo_SOWs']
 for design in designs:
     param_bounds, param_names, params_no, problem = setupProblem(design)
     samples, rows_to_keep = getSamples(design, params_no, param_bounds)
