@@ -21,7 +21,7 @@ def makeFigureS10_All5FlowRanges():
     np.sum(wider_1000, axis=2)]
     
     # plotting characteristics
-    labels=['Historical','CMIP\nwith VIC\nMultipliers','CMIP\nwith VIC\nError Model',\
+    labels=['Historical','CMIP\nwith VIC\nMultipliers','CMIP\nwith VIC\nNoise Model',\
             'Box\nAround\nHistorical','Paleo','All-\nEncompassing']
     colors = ['#80b1d3','#fdb462','#ffffb3','#fb8072','#b3de69','#bebada']
     
