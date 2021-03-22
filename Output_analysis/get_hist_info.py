@@ -15,7 +15,7 @@ def get_hist_info(ID):
     # Get summarizing files for each structure and aspect of interest from the .xdd or .xss files
     with open ('../../../'+design+'/Infofiles/' +  ID + '/' + ID + '_info_hist.txt','w') as f:
         try:
-            with open ('../../../LHsamples_original_1000_AnnQonly/cm2015B_uncurtail.xdd', 'rt') as xdd_file:
+            with open ('../../../LHsamples_original_1000_AnnQonly/cm2015B_maxTBDs.xdd', 'rt') as xdd_file:
                 for line in xdd_file:
                     data = line.split()
                     if data:
@@ -35,13 +35,13 @@ def get_hist_info(ID):
     if ID == '7202003':
         with open ('../../../'+design+'/Infofiles/' +  ID + '/' + ID + '_streamflow_hist.txt','w') as f:
             try:
-                with open ('../../../LHsamples_original_1000_AnnQonly/cm2015B_uncurtail.xdd', 'rt') as xdd_file:
+                with open ('../../../LHsamples_original_1000_AnnQonly/cm2015B_maxTBDs.xdd', 'rt') as xdd_file:
                     for line in xdd_file:
                         data = line.split()
                         if data:
                             if data[0]==ID:
                                 if data[3]!='TOT':
-                                    for o in [2, 24]:
+                                    for o in [2, 28]:
                                         line_out+=(data[o]+'\t')
                                     f.write(line_out)
                                     f.write('\n')
